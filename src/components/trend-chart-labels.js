@@ -1,8 +1,5 @@
-import { h } from 'vue'
-
 export default {
   name: "TrendChartLabels",
-  compatConfig: { RENDER_FUNCTION: false },
   props: {
     boundary: {
       required: true,
@@ -59,7 +56,7 @@ export default {
         .getBoundingClientRect().height;
     }
   },
-  render() {
+  render(h) {
     if (
       !(this.xLabels && this.xLabels.length) &&
       !(this.yLabels && this.yLabels > 0)

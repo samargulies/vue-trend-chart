@@ -1,8 +1,8 @@
-import { h } from 'vue'
+// import { h } from 'vue'
 
 export default {
   name: "TrendChartGrid",
-  compatConfig: { RENDER_FUNCTION: false },
+  // compatConfig: { RENDER_FUNCTION: false },
   props: {
     boundary: {
       required: true,
@@ -61,7 +61,7 @@ export default {
       };
     }
   },
-  render() {
+  render(h) {
     if (!this.verticalLines && !this.horizontalLines) return;
 
     const children = [];

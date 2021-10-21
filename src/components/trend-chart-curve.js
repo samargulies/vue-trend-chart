@@ -1,10 +1,10 @@
 import genPoints from "../helpers/genPoints";
 import genPath from "../helpers/genPath";
-import { h } from 'vue'
+// import { h } from 'vue'
 
 export default {
   name: "TrendChartCurve",
-  compatConfig: { RENDER_FUNCTION: false },
+  // compatConfig: { RENDER_FUNCTION: false },
   props: {
     boundary: {
       required: true,
@@ -63,7 +63,7 @@ export default {
       return genPath(this.points, this.smooth, this.boundary);
     }
   },
-  render() {
+  render(h) {
     const children = [];
     // Fill path
     if (this.fill && this.paths && this.paths.fillPath) {
