@@ -1,3 +1,5 @@
+import { h } from 'vue';
+
 function validatePadding (padding) {
   var arr = padding
     .split(" ")
@@ -26,6 +28,7 @@ function getPadding (padding) {
 
 var TrendChartGrid = {
   name: "TrendChartGrid",
+  compatConfig: { RENDER_FUNCTION: false },
   props: {
     boundary: {
       required: true,
@@ -88,7 +91,7 @@ var TrendChartGrid = {
       };
     }
   },
-  render: function render(h) {
+  render: function render() {
     if (!this.verticalLines && !this.horizontalLines) { return; }
 
     var children = [];
@@ -143,6 +146,7 @@ var TrendChartGrid = {
 
 var TrendChartLabels = {
   name: "TrendChartLabels",
+  compatConfig: { RENDER_FUNCTION: false },
   props: {
     boundary: {
       required: true,
@@ -203,7 +207,7 @@ var TrendChartLabels = {
         .getBoundingClientRect().height;
     }
   },
-  render: function render(h) {
+  render: function render() {
     var this$1 = this;
 
     if (
@@ -272,7 +276,7 @@ var TrendChartLabels = {
                 },
                 this.yLabelsTextFormatter(
                   this.minValue +
-                    ((this.maxValue - this.minValue) / (this.yLabels - 1)) * i
+                  ((this.maxValue - this.minValue) / (this.yLabels - 1)) * i
                 )
               ),
               h("line", { attrs: { stroke: "rgba(0,0,0,0.1)", x1: 0, x2: -5 } })
@@ -350,6 +354,7 @@ function genPath (pnts, smooth, ref) {
 
 var TrendChartCurve = {
   name: "TrendChartCurve",
+  compatConfig: { RENDER_FUNCTION: false },
   props: {
     boundary: {
       required: true,
@@ -408,7 +413,7 @@ var TrendChartCurve = {
       return genPath(this.points, this.smooth, this.boundary);
     }
   },
-  render: function render(h) {
+  render: function render() {
     var this$1 = this;
 
     var children = [];
@@ -478,6 +483,7 @@ var TrendChartCurve = {
 var TrendChart = {
   name: "TrendChart",
   components: { TrendChartGrid: TrendChartGrid, TrendChartLabels: TrendChartLabels, TrendChartCurve: TrendChartCurve },
+  compatConfig: { RENDER_FUNCTION: false },
   props: {
     datasets: {
       required: true,
@@ -641,8 +647,10 @@ var TrendChart = {
       );
     },
     mouseMove: function mouseMove(e) {
-      var rect = this.$refs.chart.getBoundingClientRect();
-      this.activeLine = this.getNearestCoordinate(e.clientX - rect.left);
+      if (this.$refs.chart !== undefined) {
+        var rect = this.$refs.chart.getBoundingClientRect();
+        this.activeLine = this.getNearestCoordinate(e.clientX - rect.left);
+      }
     },
     mouseOut: function mouseOut() {
       this.activeLine = null;
@@ -689,10 +697,10 @@ var TrendChart = {
     this.init();
     window.addEventListener("resize", this.onWindowResize);
   },
-  destroyed: function destroyed() {
+  unmounted: function unmounted() {
     window.removeEventListener("resize", this.onWindowResize);
   },
-  render: function render(h) {
+  render: function render() {
     var this$1 = this;
 
     var children = [];

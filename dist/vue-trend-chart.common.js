@@ -1,5 +1,7 @@
 'use strict';
 
+var vue = require('vue');
+
 function validatePadding (padding) {
   var arr = padding
     .split(" ")
@@ -28,6 +30,7 @@ function getPadding (padding) {
 
 var TrendChartGrid = {
   name: "TrendChartGrid",
+  compatConfig: { RENDER_FUNCTION: false },
   props: {
     boundary: {
       required: true,
@@ -90,7 +93,7 @@ var TrendChartGrid = {
       };
     }
   },
-  render: function render(h) {
+  render: function render() {
     if (!this.verticalLines && !this.horizontalLines) { return; }
 
     var children = [];
@@ -100,14 +103,14 @@ var TrendChartGrid = {
       var lines = [];
       for (var i = 1; i <= this.verticalLinesNumber; i++) {
         lines.push(
-          h("line", {
+          vue.h("line", {
             class: "line",
             attrs: Object.assign({}, this.setVerticalLinesParams(i))
           })
         );
       }
       children.push(
-        h(
+        vue.h(
           "g",
           {
             class: "vertical"
@@ -121,14 +124,14 @@ var TrendChartGrid = {
       var lines$1 = [];
       for (var i$1 = 1; i$1 <= this.horizontalLinesNumber; i$1++) {
         lines$1.push(
-          h("line", {
+          vue.h("line", {
             class: "line",
             attrs: Object.assign({}, this.setHorizontalLinesParams(i$1))
           })
         );
       }
       children.push(
-        h(
+        vue.h(
           "g",
           {
             class: "horizontal"
@@ -139,12 +142,13 @@ var TrendChartGrid = {
     }
 
     // Render component
-    return h("g", children);
+    return vue.h("g", children);
   }
 };
 
 var TrendChartLabels = {
   name: "TrendChartLabels",
+  compatConfig: { RENDER_FUNCTION: false },
   props: {
     boundary: {
       required: true,
@@ -205,7 +209,7 @@ var TrendChartLabels = {
         .getBoundingClientRect().height;
     }
   },
-  render: function render(h) {
+  render: function render() {
     var this$1 = this;
 
     if (
@@ -219,21 +223,21 @@ var TrendChartLabels = {
     // x labels
     if (this.xLabels && this.xLabels.length) {
       children.push(
-        h(
+        vue.h(
           "g",
           {
             class: "x-labels",
             ref: "xLabels"
           },
           this.xLabels.map(function (label, i) {
-            return h(
+            return vue.h(
               "g",
               {
                 class: "label",
                 attrs: Object.assign({}, this$1.setXLabelsParams(i))
               },
               [
-                h(
+                vue.h(
                   "text",
                   {
                     attrs: {
@@ -243,7 +247,7 @@ var TrendChartLabels = {
                   },
                   label
                 ),
-                h("line", { attrs: { stroke: "rgba(0,0,0,0.1)", y2: 5 } })
+                vue.h("line", { attrs: { stroke: "rgba(0,0,0,0.1)", y2: 5 } })
               ]
             );
           })
@@ -256,14 +260,14 @@ var TrendChartLabels = {
       var labels = [];
       for (var i = 0; i < this.yLabels; i++) {
         labels.push(
-          h(
+          vue.h(
             "g",
             {
               class: "label",
               attrs: Object.assign({}, this.setYLabelsParams(i))
             },
             [
-              h(
+              vue.h(
                 "text",
                 {
                   attrs: {
@@ -274,16 +278,16 @@ var TrendChartLabels = {
                 },
                 this.yLabelsTextFormatter(
                   this.minValue +
-                    ((this.maxValue - this.minValue) / (this.yLabels - 1)) * i
+                  ((this.maxValue - this.minValue) / (this.yLabels - 1)) * i
                 )
               ),
-              h("line", { attrs: { stroke: "rgba(0,0,0,0.1)", x1: 0, x2: -5 } })
+              vue.h("line", { attrs: { stroke: "rgba(0,0,0,0.1)", x1: 0, x2: -5 } })
             ]
           )
         );
       }
       children.push(
-        h(
+        vue.h(
           "g",
           {
             class: "y-labels",
@@ -295,7 +299,7 @@ var TrendChartLabels = {
     }
 
     // Render component
-    return h("g", children);
+    return vue.h("g", children);
   }
 };
 
@@ -352,6 +356,7 @@ function genPath (pnts, smooth, ref) {
 
 var TrendChartCurve = {
   name: "TrendChartCurve",
+  compatConfig: { RENDER_FUNCTION: false },
   props: {
     boundary: {
       required: true,
@@ -410,14 +415,14 @@ var TrendChartCurve = {
       return genPath(this.points, this.smooth, this.boundary);
     }
   },
-  render: function render(h) {
+  render: function render() {
     var this$1 = this;
 
     var children = [];
     // Fill path
     if (this.fill && this.paths && this.paths.fillPath) {
       children.push(
-        h("path", {
+        vue.h("path", {
           class: "fill",
           attrs: {
             d: this.paths.fillPath,
@@ -429,7 +434,7 @@ var TrendChartCurve = {
     // Stroke path
     if (this.stroke && this.paths && this.paths.linePath) {
       children.push(
-        h("path", {
+        vue.h("path", {
           class: "stroke",
           attrs: {
             d: this.paths.linePath,
@@ -442,12 +447,12 @@ var TrendChartCurve = {
     // Points
     if (this.showPoints && this.points) {
       children.push(
-        h(
+        vue.h(
           "g",
           {
             class: "points"
           },
-          this.points.map(function (point, i) { return h("circle", {
+          this.points.map(function (point, i) { return vue.h("circle", {
               class: {
                 point: true,
                 "is-active":
@@ -467,7 +472,7 @@ var TrendChartCurve = {
     }
 
     // Render component
-    return h(
+    return vue.h(
       "g",
       {
         class: this.className
@@ -480,6 +485,7 @@ var TrendChartCurve = {
 var TrendChart = {
   name: "TrendChart",
   components: { TrendChartGrid: TrendChartGrid, TrendChartLabels: TrendChartLabels, TrendChartCurve: TrendChartCurve },
+  compatConfig: { RENDER_FUNCTION: false },
   props: {
     datasets: {
       required: true,
@@ -643,8 +649,10 @@ var TrendChart = {
       );
     },
     mouseMove: function mouseMove(e) {
-      var rect = this.$refs.chart.getBoundingClientRect();
-      this.activeLine = this.getNearestCoordinate(e.clientX - rect.left);
+      if (this.$refs.chart !== undefined) {
+        var rect = this.$refs.chart.getBoundingClientRect();
+        this.activeLine = this.getNearestCoordinate(e.clientX - rect.left);
+      }
     },
     mouseOut: function mouseOut() {
       this.activeLine = null;
@@ -691,10 +699,10 @@ var TrendChart = {
     this.init();
     window.addEventListener("resize", this.onWindowResize);
   },
-  destroyed: function destroyed() {
+  unmounted: function unmounted() {
     window.removeEventListener("resize", this.onWindowResize);
   },
-  render: function render(h) {
+  render: function render() {
     var this$1 = this;
 
     var children = [];
@@ -702,7 +710,7 @@ var TrendChart = {
     // Grid
     if (this.grid) {
       children.push(
-        h(TrendChartGrid, {
+        vue.h(TrendChartGrid, {
           class: "grid",
           attrs: {
             verticalLines: this.grid.verticalLines,
@@ -722,7 +730,7 @@ var TrendChart = {
     // Chart active line
     if (this.interactive && this.chartOverlayParams) {
       children.push(
-        h("line", {
+        vue.h("line", {
           class: "active-line",
           ref: "active-line",
           attrs: {
@@ -740,7 +748,7 @@ var TrendChart = {
     // Labels
     if (this.labels) {
       children.push(
-        h(TrendChartLabels, {
+        vue.h(TrendChartLabels, {
           class: "labels",
           ref: "labels",
           attrs: Object.assign({}, this.labels,
@@ -754,7 +762,7 @@ var TrendChart = {
     // Curves
     this.datasets.map(function (dataset) {
       children.push(
-        h(TrendChartCurve, {
+        vue.h(TrendChartCurve, {
           class: "curve",
           attrs: Object.assign({}, dataset,
             {boundary: this$1.boundary,
@@ -769,7 +777,7 @@ var TrendChart = {
     // Chart overlay
     if (this.interactive && this.chartOverlayParams) {
       children.push(
-        h("rect", {
+        vue.h("rect", {
           ref: "interactive-area",
           attrs: Object.assign({}, this.chartOverlayParams),
           on: {
@@ -781,7 +789,7 @@ var TrendChart = {
     }
 
     // Render component
-    return h(
+    return vue.h(
       "svg",
       {
         class: "vtc",
