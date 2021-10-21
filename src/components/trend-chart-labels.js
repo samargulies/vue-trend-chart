@@ -1,5 +1,8 @@
+import { h } from 'vue'
+
 export default {
   name: "TrendChartLabels",
+  compatConfig: { RENDER_FUNCTION: false },
   props: {
     boundary: {
       required: true,
@@ -56,7 +59,7 @@ export default {
         .getBoundingClientRect().height;
     }
   },
-  render(h) {
+  render() {
     if (
       !(this.xLabels && this.xLabels.length) &&
       !(this.yLabels && this.yLabels > 0)
@@ -127,7 +130,7 @@ export default {
                 },
                 this.yLabelsTextFormatter(
                   this.minValue +
-                    ((this.maxValue - this.minValue) / (this.yLabels - 1)) * i
+                  ((this.maxValue - this.minValue) / (this.yLabels - 1)) * i
                 )
               ),
               h("line", { attrs: { stroke: "rgba(0,0,0,0.1)", x1: 0, x2: -5 } })

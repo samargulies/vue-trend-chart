@@ -4,10 +4,12 @@ import getPadding from "../helpers/getPadding";
 import TrendChartGrid from "./trend-chart-grid";
 import TrendChartLabels from "./trend-chart-labels";
 import TrendChartCurve from "./trend-chart-curve";
+import { h } from 'vue';
 
 export default {
   name: "TrendChart",
   components: { TrendChartGrid, TrendChartLabels, TrendChartCurve },
+  compatConfig: { RENDER_FUNCTION: false },
   props: {
     datasets: {
       required: true,
@@ -211,10 +213,10 @@ export default {
     this.init();
     window.addEventListener("resize", this.onWindowResize);
   },
-  destroyed() {
+  unmounted() {
     window.removeEventListener("resize", this.onWindowResize);
   },
-  render(h) {
+  render() {
     const children = [];
 
     // Grid
